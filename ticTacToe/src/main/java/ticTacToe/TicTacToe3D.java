@@ -18,10 +18,10 @@ public class TicTacToe3D extends TicTacToeGame {
 	private TicTacToeGame side;
 	
 	//the four 3D diagonals that pass through the center of the board
-	private static final int[][] DiagOne = {{0,0,0},{1,1,1},{2,2,2},{3,3,3}};
-	private static final int[][] DiagTwo = {{0,3,0},{1,2,1},{2,1,2},{3,0,3}};
-	private static final int[][] DiagThree = {{3,0,0},{2,1,1},{1,2,2},{0,3,3}};
-	private static final int[][] DiagFour = {{3,3,0},{2,2,1},{1,1,2},{0,0,3}};
+	private static int[][] diagOne;
+	private static int[][] diagTwo;
+	private static int[][] diagThree;
+	private static int[][] diagFour;
 	
 	private int[] pos3D; //int[] of [row, column, depth] of last move
 	private int[] pos; //int[] of [row, column] of last move
@@ -40,6 +40,7 @@ public class TicTacToe3D extends TicTacToeGame {
 		
 		topDown = new TicTacToeGame(getSize());
 		side = new TicTacToeGame(getSize());
+		createDiags(getSize());
 	}
 	
 	
@@ -253,27 +254,72 @@ public class TicTacToe3D extends TicTacToeGame {
 	 * checks if the move is a winning move on that diagonal.
 	 */
 	public void onDiag() {
-		for (int[] ary : DiagOne) {
+		for (int[] ary : diagOne) {
 			if (Arrays.equals(ary, pos3D)) {
-				checkWinOnDiag(DiagOne);
+				checkWinOnDiag(diagOne);
 			}
 		}
-		for (int[] ary : DiagTwo) {
+		for (int[] ary : diagTwo) {
 			if (Arrays.equals(ary, pos3D)) {
-				checkWinOnDiag(DiagTwo);
+				checkWinOnDiag(diagTwo);
 			}
 		}
-		for (int[] ary : DiagThree) {
+		for (int[] ary : diagThree) {
 			if (Arrays.equals(ary, pos3D)) {
-				checkWinOnDiag(DiagThree);
+				checkWinOnDiag(diagThree);
 			}
 		}
-		for (int[] ary : DiagFour) {
+		for (int[] ary : diagFour) {
 			if (Arrays.equals(ary, pos3D)) {
-				checkWinOnDiag(DiagFour);
+				checkWinOnDiag(diagFour);
 			}
 		}
 	}
+	
+	
+	/**
+	 * Series of methods create four inner diagonals, based on size of board
+	 * @param size size of 3D board
+	 */
+	private void createDiags(int size) {
+		createDiagOne(size);
+		createDiagTwo(size);
+		createDiagThree(size);
+		createDiagFour(size);
+	}	
+	private void createDiagOne(int size) {
+		diagOne = new int[size][3];
+		for (int i = 0; i < size; i++) {
+			diagOne[i][0] = i;
+			diagOne[i][1] = i;
+			diagOne[i][2] = i;
+		}
+	}
+	private void createDiagTwo(int size) {
+		diagTwo = new int[size][3];
+		for (int i = 0; i < size; i++) {
+			diagTwo[i][0] = i;
+			diagTwo[i][1] = (size - 1) - i;
+			diagTwo[i][2] = i;
+		}
+	}
+	private void createDiagThree(int size) {
+		diagThree = new int[size][3];
+		for (int i = 0; i < size; i++) {
+			diagThree[i][0] = (size - 1) - i;
+			diagThree[i][1] = i;
+			diagThree[i][2] = i;
+		}
+	}
+	private void createDiagFour(int size) {
+		diagFour = new int[size][3];
+		for (int i = 0; i < size; i++) {
+			diagFour[i][0] = (size - 1) - i;
+			diagFour[i][1] = (size - 1) - i;
+			diagFour[i][2] = i;
+		}
+	}
+	
 	
 	/**
 	 * Method used to check if the player has one on the given diagonal
